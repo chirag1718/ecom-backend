@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: {
+  firstName: {
     type: String,
     required: true,
-    min: 6,
     max: 256,
   },
 
@@ -25,6 +24,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  role: {
+    type: String,
+    default: "user"
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);
