@@ -9,8 +9,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // Import Routes
-const authRoute = require("./routes/auth");
+  // Authentication route
+  const authRoute = require("./routes/auth");
 
+  // Dashboard route
+  const dashboardRoute = require("./routes/dashboard")
+  
 // cors import
 const cors = require("cors");
 
@@ -34,8 +38,11 @@ app.use(cors());
 app.use(express.json());
 
 // Route Middlewares
-// User authentication Route
-app.use("/api/v1/user", authRoute);
+  // User authentication Route
+  app.use("/api/v1/user", authRoute);
+
+  // Dashboard Route
+  app.use("/api/v1/dashboard", dashboardRoute)
 
 // Product Route
 
