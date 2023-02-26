@@ -1,20 +1,30 @@
 const router = require("express").Router();
 
-// Product Schema
+// Product Schema 📃
 const Product = require("../model/Product");
 
-router.post("/", async (req, res) => {
-  // Create new product
+// Cloudinary ☁️
+const cloudinary = require("../utils/cloudinary");
+
+// Multer 🗄️
+const upload = require("../utils/multer");
+
+// Product Route 👇🏻
+router.post("/", upload.single("image"), async (req, res) => {
+  // Upload image to cloudinary
+  const result = await cloudinary.uploader.upload(req.file.path);
+
+  // Create new product 🍫
   const product = new Product({
     name: req.body.name,
     description: req.body.description,
-    image: req.body.image,
+    image: result.url,
     price: req.body.price,
     quantity: req.body.quantity,
     rating: req.body.rating,
   });
 
-  //Save new product
+  //Save new product 🍫
   try {
     const savedProduct = await product.save();
     res.send(savedProduct);
