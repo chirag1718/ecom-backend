@@ -50,6 +50,7 @@ app.use("/api/v1/dashboard", adminAuthMiddleware, dashboardRoute);
 
 // Product Route
 app.use("/api/v1/product", productRoute);
+
 // Server Connection
 const port = process.env.PORT || 3006;
 app.listen(port, console.log("Server is up and Running!"));

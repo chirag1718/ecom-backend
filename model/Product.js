@@ -27,10 +27,10 @@ const productSchema = new mongoose.Schema({
     default: 1,
   },
 
-  rating: {
-    type: Number,
-    default: 0,
-  },
+  // rating: {
+  //   type: Number,
+  //   default: 0,
+  // },
 });
 
 module.exports = mongoose.model("Product", productSchema);

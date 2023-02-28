@@ -21,7 +21,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     image: result.url,
     price: req.body.price,
     quantity: req.body.quantity,
-    rating: req.body.rating,
+    // rating: req.body.rating,
   });
 
   //Save new product 🍫
