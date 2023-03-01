@@ -1,4 +1,11 @@
+// Cloudinary
 const cloudinary = require("cloudinary");
+
+// Dotenv
+const dotenv = require("dotenv");
+dotenv.config();
+
+// Cofiguration
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -6,4 +13,4 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-module.exports = cloudinary
+module.exports = cloudinary;

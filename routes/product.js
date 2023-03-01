@@ -7,28 +7,29 @@ const Product = require("../model/Product");
 const cloudinary = require("../utils/cloudinary");
 
 // Multer 🗄️
-const upload = require("../utils/multer");
+const multerUpload = require("../utils/multer");
 
-// Product Route 👇🏻
-router.post("/", upload.single("image"), async (req, res) => {
-  // Upload image to cloudinary
-  const result = await cloudinary.uploader.upload(req.file.path);
-
-  // Create new product 🍫
-  const product = new Product({
-    name: req.body.name,
-    description: req.body.description,
-    image: result.url,
-    price: req.body.price,
-    quantity: req.body.quantity,
-    // rating: req.body.rating,
-  });
-
-  //Save new product 🍫
+// Add Product Route 👇🏻
+router.post("/addproduct", multerUpload.single("image"), async (req, res) => {
   try {
+    // Upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    // Create new product 🍫
+    const product = new Product({
+      name: req.body.name,
+      description: req.body.description,
+      image: result.url,
+      price: req.body.price,
+    });
+    // console.log("New Product", product);
+
+    //Save new product 🍫
     const savedProduct = await product.save();
-    res.send(savedProduct);
+    // console.log("Saved Product", savedProduct);
+    res.status(200).send(savedProduct);
   } catch (err) {
+    console.log(err);
     res.status(400).send(err);
   }
 });

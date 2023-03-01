@@ -22,6 +22,9 @@ const productRoute = require("./routes/product");
 const cors = require("cors");
 const { adminAuthMiddleware } = require("./routes/verifyToken");
 
+// Express File upload
+const bodyParser = require("body-parser");
+
 // Connection to DB
 mongoose.set("strictQuery", true);
 // When using strictQuery: true, Mongoose will only save fields that are specified in your schema
@@ -39,7 +42,8 @@ mongoose
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Route Middlewares
 // User authentication Route
