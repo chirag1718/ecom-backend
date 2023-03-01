@@ -10,10 +10,11 @@ const cloudinary = require("../utils/cloudinary");
 const multerUpload = require("../utils/multer");
 
 // Add Product Route 👇🏻
-router.post("/addproduct", multerUpload.single("image"), async (req, res) => {
+router.post("/addproduct", multerUpload.single("file"), async (req, res) => {
   try {
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
+    // console.log(result);
 
     // Create new product 🍫
     const product = new Product({
@@ -22,7 +23,6 @@ router.post("/addproduct", multerUpload.single("image"), async (req, res) => {
       image: result.url,
       price: req.body.price,
     });
-    // console.log("New Product", product);
 
     //Save new product 🍫
     const savedProduct = await product.save();
