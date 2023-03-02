@@ -20,6 +20,7 @@ router.post("/addproduct", multerUpload.single("file"), async (req, res) => {
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
+      category: req.body.category,
       image: result.url,
       price: req.body.price,
     });

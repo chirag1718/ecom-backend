@@ -21,16 +21,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  // quantity: {
-  //   type: Number,
-  //   required: true,
-  //   default: 1,
-  // },
-
-  // rating: {
-  //   type: Number,
-  //   default: 0,
-  // },
+  category: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);
