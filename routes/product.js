@@ -9,8 +9,33 @@ const cloudinary = require("../utils/cloudinary");
 // Multer 🗄️
 const multerUpload = require("../utils/multer");
 
-// Add Product Route 👇🏻
-router.post("/addproduct", multerUpload.single("file"), async (req, res) => {
+// ROUTES 👇🏻
+
+// Get All products 🍫*N
+router.get("/getallproducts", async (req, res) => {
+  try {
+    // const product = await db.collection("products")
+    const results = await Product.find({});
+    res.status(200).send(results);
+  } catch (err) {
+    res.status(400).send(err);
+    console.log(err);
+  }
+});
+
+// Get One Product 🍫
+router.get("/products/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const results = await Product.findOne({ productId });
+    res.status(200).send(results)
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Add Product Route 👇🏻➕
+router.post("/addproducts", multerUpload.single("file"), async (req, res) => {
   try {
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
