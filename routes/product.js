@@ -16,21 +16,30 @@ router.get("/getallproducts", async (req, res) => {
   try {
     // const product = await db.collection("products")
     const results = await Product.find({});
+    if (!results) {
+      // Product not found
+      return res.status(404).send("Product not found. Please navigate to Home");
+    }
+    // Product found
     res.status(200).send(results);
   } catch (err) {
-    res.status(400).send(err);
-    console.log(err);
+    res.send("Products not found please navigate to Home: ", err);
   }
 });
 
 // Get One Product 🍫
-router.get("/products/:id", async (req, res) => {
+router.get("/getoneproduct/:id", async (req, res) => {
   try {
     const productId = req.params.id;
-    const results = await Product.findOne({ productId });
-    res.status(200).send(results)
+    const results = await Product.findById(productId);
+    if (!results) {
+      // Product not found
+      return res.status(404).send("Product not found. Please navigate to Home");
+    }
+    // Product found
+    res.status(200).send(results);
   } catch (err) {
-    console.log(err);
+    res.send("Product not found please navigate to Home: ", err);
   }
 });
 
