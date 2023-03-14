@@ -18,6 +18,9 @@ const dashboardRoute = require("./routes/dashboard");
 // Product route
 const productRoute = require("./routes/product");
 
+// Banner route
+const bannerRoute = require("./routes/Banner")
+
 // cors import
 const cors = require("cors");
 const { adminAuthMiddleware } = require("./routes/verifyToken");
@@ -54,6 +57,9 @@ app.use("/api/v1/dashboard", adminAuthMiddleware, dashboardRoute);
 
 // Product Route
 app.use("/api/v1/product", productRoute);
+
+// Banner Route
+app.use("/api/v1/banner", bannerRoute);
 
 // Server Connection
 const port = process.env.PORT || 3006;

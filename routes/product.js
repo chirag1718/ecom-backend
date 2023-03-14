@@ -12,7 +12,7 @@ const multerUpload = require("../utils/multer");
 // ROUTES 👇🏻
 
 // Get All products 🍫*N
-router.get("/getallproducts", async (req, res) => {
+router.get("/get-all-products", async (req, res) => {
   try {
     // const product = await db.collection("products")
     const results = await Product.find({});
@@ -28,7 +28,7 @@ router.get("/getallproducts", async (req, res) => {
 });
 
 // Get One Product 🍫
-router.get("/getoneproduct/:id", async (req, res) => {
+router.get("/get-one-product/:id", async (req, res) => {
   try {
     const productId = req.params.id;
     const results = await Product.findById(productId);
@@ -44,11 +44,15 @@ router.get("/getoneproduct/:id", async (req, res) => {
 });
 
 // Add Product Route 👇🏻➕
-router.post("/addproducts", multerUpload.single("file"), async (req, res) => {
+router.post("/add-products", multerUpload.single("file"), async (req, res) => {
   try {
     // Upload image to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
-    // console.log(result);
+    const file = req.file.path
+    const result = await cloudinary.uploader.upload(file, {
+      // public_id: `${Date.now()}`,
+      folder: "assets/product"
+    });
+    console.log(result);
 
     // Create new product 🍫
     const product = new Product({
