@@ -47,10 +47,10 @@ router.get("/get-one-product/:id", async (req, res) => {
 router.post("/add-products", multerUpload.single("file"), async (req, res) => {
   try {
     // Upload image to cloudinary
-    const file = req.file.path
+    const file = req.file.path;
     const result = await cloudinary.uploader.upload(file, {
       // public_id: `${Date.now()}`,
-      folder: "assets/product"
+      folder: "assets/product",
     });
     console.log(result);
 
