@@ -52,7 +52,7 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
       // public_id: `${Date.now()}`,
       folder: "assets/product",
     });
-    console.log(result);
+    // console.log(result);
 
     // Create new product 🍫
     const product = new Product({

@@ -1,21 +1,32 @@
 const router = require("express").Router();
 
-// Banner Schema
+// Banner Schema 📃
 const Banner = require("../model/Banner");
 
-// Cloudinary
+// Cloudinary ☁️
 const cloudinary = require("../utils/cloudinary");
 
-// Multer
+// Multer 🗄️
 const bannerMulter = require("../utils/bannerMulter");
 
-// Routes
+// Routes 👇🏻
 
-// Get Banner
-router.get("/get-banner", async (req, res) => {
-  // get banner image
+// Get a single Banner 
+router.get("/get-banner/:id", async (req, res) => {
+  try {
+    const bannerId = req.params.id;
+    const results = await Banner.findById(bannerId);
+    if (!results) {
+      // Banner not found
+      return res.status(404).send("Banner not found! Please nvaigate to Home.");
+    }
+    res.status(200).send(results);
+  } catch (err) {
+    res.send("Products not found please navigate to Home!", err);
+  }
 });
-// Add Banner
+
+// Add Banner 📷
 router.post("/add-banner", bannerMulter.single("image"), async (req, res) => {
   try {
     const file = req.file.path;
@@ -25,12 +36,13 @@ router.post("/add-banner", bannerMulter.single("image"), async (req, res) => {
       // public_id: `${Date.now()}`,
       folder: "assets/banner",
     });
-    console.log(result);
+    // console.log(result);
 
     // Create new Banner 🍫
     const banner = new Banner({
       name: req.body.name,
       image: result.url,
+      source: req.body.source,
     });
 
     //Save new Banner 🍫
