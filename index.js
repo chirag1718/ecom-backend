@@ -19,7 +19,7 @@ const dashboardRoute = require("./routes/dashboard");
 const productRoute = require("./routes/product");
 
 // Banner route
-const bannerRoute = require("./routes/banner")
+const bannerRoute = require("./routes/banner");
 
 // cors import
 const cors = require("cors");

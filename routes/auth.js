@@ -70,7 +70,15 @@ router.post("/login", async (req, res) => {
     { _id: user._id, role: user.role },
     process.env.TOKEN_SECRET
   );
-  res.header("auth-token", token).send(token);
+  res.header("auth-token", token).send({
+    token,
+    user,
+  });
 });
+
+// Get user details
+// router.get("/user-details", async (req, res) => {
+//   return res.status(200).send()
+// })
 
 module.exports = router;
