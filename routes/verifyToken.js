@@ -8,6 +8,11 @@ const authMiddleware = (req, res, next) => {
   try {
     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
     req.user = verified;
+    if (req.user.role === "user") {
+      next();
+    } else {
+      res.status(401).send("Acces Denied");
+    }
     next();
   } catch (err) {
     req.status(400).send("Invalid Token");
