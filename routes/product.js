@@ -1,5 +1,6 @@
 const router = require("express").Router();
 
+const { set } = require("mongoose");
 // Product Schema 📃
 const Product = require("../model/Product");
 
@@ -49,10 +50,8 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
     // Upload image to cloudinary
     const file = req.file.path;
     const result = await cloudinary.uploader.upload(file, {
-      // public_id: `${Date.now()}`,
       folder: "assets/product",
     });
-    // console.log(result);
 
     // Create new product 🍫
     const product = new Product({
@@ -72,5 +71,29 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+// Update a product 🍫
+router.put("/update-product/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const results = await Product.updateOne(
+      { _id: productId },
+      {
+        $set: {
+          name: req.body.name,
+          description: req.body.description,
+          category: req.body.category,
+          price: req.body.price,
+        },
+      },
+      { upsert: true }
+    );
+    res.send(results);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.delete("");
 
 module.exports = router;
