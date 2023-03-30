@@ -85,6 +85,7 @@ router.put("/update-product/:id", async (req, res) => {
           description: req.body.description,
           category: req.body.category,
           price: req.body.price,
+          image: req.body.image,
         },
       },
       { upsert: true }
