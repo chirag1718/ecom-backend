@@ -76,6 +76,7 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
 router.put("/update-product/:id", async (req, res) => {
   try {
     const productId = req.params.id;
+    const options = { upsert: true };
     const results = await Product.updateOne(
       { _id: productId },
       {
@@ -93,7 +94,5 @@ router.put("/update-product/:id", async (req, res) => {
     console.log(err);
   }
 });
-
-router.delete("");
 
 module.exports = router;
