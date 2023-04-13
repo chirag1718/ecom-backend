@@ -1,6 +1,5 @@
 const router = require("express").Router();
 
-const { set } = require("mongoose");
 // Product Schema 📃
 const Product = require("../model/Product");
 
@@ -49,10 +48,11 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
   try {
     // Upload image to cloudinary
     const file = req.file.path;
+    // console.log(req, "this is file");
     const result = await cloudinary.uploader.upload(file, {
       folder: "assets/product",
     });
-
+    console.log(result, "this is add product route");
     // Create new product 🍫
     const product = new Product({
       name: req.body.name,
@@ -73,27 +73,42 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
 });
 
 // Update a product 🍫
-router.put("/update-product/:id", async (req, res) => {
-  try {
-    const productId = req.params.id;
-    const options = { upsert: true };
-    const results = await Product.updateOne(
-      { _id: productId },
-      {
-        $set: {
-          name: req.body.name,
-          description: req.body.description,
-          category: req.body.category,
-          price: req.body.price,
-          image: req.body.image,
+router.put(
+  "/update-product/:id",
+  multerUpload.single("file"),
+  async (req, res) => {
+    try {
+      const file = req.file.path;
+
+      const productId = req.params.id;
+
+      const upload = await cloudinary.uploader.explicit(file, {
+        type: "upload",
+        public_id: "assets/product/qiq6k2cqxruphafrliez",
+        overwrite: true,
+        invalidate: true,
+        folder: "assets/product",
+      });
+
+      const results = await Product.updateOne(
+        { _id: productId },
+        {
+          $set: {
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            price: req.body.price,
+            image: upload.url,
+          },
         },
-      },
-      { upsert: true }
-    );
-    res.send(results);
-  } catch (err) {
-    console.log(err);
+        { upsert: true }
+      );
+
+      res.status(200).send(results);
+    } catch (err) {
+      console.log(err, "product update failed");
+    }
   }
-});
+);
 
 module.exports = router;
