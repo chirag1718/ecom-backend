@@ -1,5 +1,6 @@
 const router = require("express").Router();
 
+const { Collection } = require("mongoose");
 // Product Schema 📃
 const Product = require("../model/Product");
 
@@ -11,7 +12,7 @@ const multerUpload = require("../utils/multer");
 
 // ROUTES 👇🏻
 
-// Get All products 🍫*N
+// Get All products 🍫
 router.get("/get-all-products", async (req, res) => {
   try {
     // const product = await db.collection("products")
@@ -82,14 +83,14 @@ router.put(
 
       const productId = req.params.id;
 
-      const upload = await cloudinary.uploader.explicit(file, {
+      const update = await cloudinary.uploader.explicit(file, {
         type: "upload",
         public_id: "assets/product/qiq6k2cqxruphafrliez",
         overwrite: true,
         invalidate: true,
         folder: "assets/product",
       });
-
+      console.log(update, "this is updated log");
       const results = await Product.updateOne(
         { _id: productId },
         {
@@ -98,7 +99,7 @@ router.put(
             description: req.body.description,
             category: req.body.category,
             price: req.body.price,
-            image: upload.url,
+            image: update.url,
           },
         },
         { upsert: true }
@@ -111,4 +112,20 @@ router.put(
   }
 );
 
+// Delete one product 🍫💥
+router.delete("/delete", async (req, res) => {
+  try {
+    const productId = req.query.id;
+    console.log(req.query, "this is req.query");
+    // let publicId = "assets/product/qiq6k2cqxruphafrliez";
+    // const deleteImage = cloudinary.uploader.destroy(publicId);
+    // const results = await Product.deleteOne({
+    //   _id: productId,
+    // });
+    // res.status(200).send(results);
+    // console.log(results, "Deleted product successfully - [server]");
+  } catch (err) {
+    console.log(err, "this is delete route error");
+  }
+});
 module.exports = router;
