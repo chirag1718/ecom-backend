@@ -59,13 +59,17 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
-      image: result.url,
+      image: {
+        public_id: result.public_id,
+        url: result.url,
+      },
       price: req.body.price,
     });
 
     //Save new product 🍫
     const savedProduct = await product.save();
-    // console.log("Saved Product", savedProduct);
+    // console.log("this is image", product.image.public_id);
+
     res.status(200).send(savedProduct);
   } catch (err) {
     console.log(err);
@@ -80,17 +84,17 @@ router.put(
   async (req, res) => {
     try {
       const file = req.file.path;
-
       const productId = req.params.id;
-
+      const currentProduct = await Product.findById(productId);
+      console.log(currentProduct.image.public_id, "this is current product");
       const update = await cloudinary.uploader.explicit(file, {
         type: "upload",
-        public_id: "assets/product/qiq6k2cqxruphafrliez",
+        public_id: currentProduct.image.public_id,
         overwrite: true,
         invalidate: true,
         folder: "assets/product",
       });
-      console.log(update, "this is updated log");
+      // console.log(update, "this is updated log");
       const results = await Product.updateOne(
         { _id: productId },
         {
@@ -106,6 +110,7 @@ router.put(
       );
 
       res.status(200).send(results);
+      // console.log(results, "this is results");
     } catch (err) {
       console.log(err, "product update failed");
     }
@@ -113,17 +118,14 @@ router.put(
 );
 
 // Delete one product 🍫💥
-router.delete("/delete", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
-    const productId = req.query.id;
-    console.log(req.query, "this is req.query");
-    // let publicId = "assets/product/qiq6k2cqxruphafrliez";
-    // const deleteImage = cloudinary.uploader.destroy(publicId);
-    // const results = await Product.deleteOne({
-    //   _id: productId,
-    // });
-    // res.status(200).send(results);
-    // console.log(results, "Deleted product successfully - [server]");
+    const currentProduct = await Product.findById(req.params.id);
+    const imgId = currentProduct.image.public_id;
+    console.log(currentProduct);
+    await cloudinary.uploader.destroy(imgId);
+    const removeProduct = await Product.findByIdAndDelete(req.params.id);
+    res.status(200).send(removeProduct);
   } catch (err) {
     console.log(err, "this is delete route error");
   }
