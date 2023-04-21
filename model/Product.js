@@ -31,6 +31,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  isHero: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);
