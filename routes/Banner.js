@@ -6,12 +6,12 @@ const Banner = require("../model/Banner");
 // Cloudinary ☁️
 const cloudinary = require("../utils/cloudinary");
 
-// Multer 🗄️
-const bannerMulter = require("../utils/bannerMulter");
+// Multer
+const multerUpload = require("../utils//multer");
 
 // Routes 👇🏻
 
-// Get a single Banner 
+// Get a single Banner
 router.get("/get-banner/:id", async (req, res) => {
   try {
     const bannerId = req.params.id;
@@ -27,16 +27,14 @@ router.get("/get-banner/:id", async (req, res) => {
 });
 
 // Add Banner 📷
-router.post("/add-banner", bannerMulter.single("image"), async (req, res) => {
+router.post("/add-banner", multerUpload.single("file"), async (req, res) => {
   try {
     const file = req.file.path;
-    // console.log(file);
-    // Upload image to cloudinary
+    console.log(file, "this is banner req.file.path log");
     const result = await cloudinary.uploader.upload(file, {
-      // public_id: `${Date.now()}`,
       folder: "assets/banner",
     });
-    // console.log(result);
+    console.log(result, "this is banner log");
 
     // Create new Banner 🍫
     const banner = new Banner({
