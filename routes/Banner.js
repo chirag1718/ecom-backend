@@ -11,11 +11,10 @@ const multerUpload = require("../utils//multer");
 
 // Routes 👇🏻
 
-// Get a single Banner
-router.get("/get-banner/:id", async (req, res) => {
+// Get all Banner
+router.get("/get-all-banner", async (req, res) => {
   try {
-    const bannerId = req.params.id;
-    const results = await Banner.findById(bannerId);
+    const results = await Banner.find({});
     if (!results) {
       // Banner not found
       return res.status(404).send("Banner not found! Please nvaigate to Home.");
