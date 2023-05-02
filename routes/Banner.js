@@ -87,7 +87,7 @@ router.put(
         folder: "assets/banner",
       });
 
-      const results = await Product.updatOne(
+      const results = await Banner.updateOne(
         { _id: bannerId },
         {
           $set: {

@@ -64,6 +64,7 @@ router.post("/add-products", multerUpload.single("file"), async (req, res) => {
         url: result.url,
       },
       price: req.body.price,
+      quantity: req.body.quantity,
       isHero: req.body.isHero,
     });
 
