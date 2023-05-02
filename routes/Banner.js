@@ -57,6 +57,7 @@ router.post("/add-banner", multerUpload.single("file"), async (req, res) => {
         url: result.url,
       },
       source: req.body.source,
+      isHero: req.body.isHero,
     });
 
     //Save new Banner 🍫
@@ -103,4 +104,18 @@ router.put(
     }
   }
 );
+
+// Delete one Banner
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const currentBanner = await Banner.findById(req.params.id);
+    const imgId = currentBanner.image.public_id;
+    await cloudinary.uploader.destroy(imgId);
+    const removeBanner = await Banner.findByIdAndDelete(req.params.id);
+    res.status(200).send(removeBanner);
+  } catch (err) {
+    console.log(err, "Error: Banner delete route");
+  }
+});
+
 module.exports = router;

@@ -22,6 +22,10 @@ const bannerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  isHero: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Banner", bannerSchema);
