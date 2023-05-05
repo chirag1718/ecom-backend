@@ -21,6 +21,9 @@ const productRoute = require("./routes/product");
 // Banner route
 const bannerRoute = require("./routes/banner");
 
+// Cart route
+const cartRoute = require("./routes/cart");
+
 // cors import
 const cors = require("cors");
 const { adminAuthMiddleware } = require("./routes/verifyToken");
@@ -61,6 +64,8 @@ app.use("/api/v1/product", productRoute);
 // Banner Route
 app.use("/api/v1/banner", bannerRoute);
 
+// Cart Route
+app.use("/api/v1/cart", cartRoute);
 // Server Connection
 const port = process.env.PORT || 3006;
 app.listen(port, console.log("Server is up and Running!"));

@@ -1,6 +1,5 @@
 const router = require("express").Router();
 
-const { Collection } = require("mongoose");
 // Product Schema 📃
 const Product = require("../model/Product");
 
@@ -87,8 +86,9 @@ router.put(
     try {
       const file = req.file.path;
       const productId = req.params.id;
+      // console.log();
       const currentProduct = await Product.findById(productId);
-      console.log(currentProduct.image.public_id, "this is current product");
+      // console.log(currentProduct, "this is current product");
       const update = await cloudinary.uploader.explicit(file, {
         type: "upload",
         public_id: currentProduct.image.public_id,
@@ -96,8 +96,8 @@ router.put(
         invalidate: true,
         folder: "assets/product",
       });
-      // console.log(update, "this is updated log");
-      const results = await Product.updateOne(
+      console.log(update, "this is image updated log");
+      const results = await Product.findByIdAndUpdate(
         { _id: productId },
         {
           $set: {
@@ -105,14 +105,15 @@ router.put(
             description: req.body.description,
             category: req.body.category,
             price: req.body.price,
+            //FIX THIS: Image is not updated because of missing public_id
             image: update.url,
           },
         },
         { upsert: true }
       );
-
+      // console.log(results);
       res.status(200).send(results);
-      // console.log(results, "this is results");
+      console.log(results, "this is mongo results");
     } catch (err) {
       console.log(err, "product update failed");
     }
