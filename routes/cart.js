@@ -6,13 +6,15 @@ const Cart = require("../model/Cart");
 // ROUTES 👇🏻
 
 // Get all Cart Items
-router.get("/get-all-items", async (req, res) => {
+router.post("/get-all-items", async (req, res) => {
   try {
-    const results = await Cart.find({});
+    const results = await Cart.find({ userId: req.body.userId }).populate("productId");
+    // console.log(req.body.userId, "dasjgknklg");
+    console.log(results, "this is cart results get all items");
     if (!results) {
       return res.status(404).send("Cart not found!");
     }
-    console.log("this is get-all-items cart route");
+    // console.log("this is get-all-items cart route");
     res.status(200).send(results);
   } catch (err) {
     console.log(err, "Error: Cart get-all-items route");
