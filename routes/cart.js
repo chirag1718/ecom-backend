@@ -8,7 +8,9 @@ const Cart = require("../model/Cart");
 // Get all Cart Items
 router.post("/get-all-items", async (req, res) => {
   try {
-    const results = await Cart.find({ userId: req.body.userId }).populate("productId");
+    const results = await Cart.find({ userId: req.body.userId }).populate(
+      "productId"
+    );
     // console.log(req.body.userId, "dasjgknklg");
     console.log(results, "this is cart results get all items");
     if (!results) {
@@ -48,4 +50,11 @@ router.post("/add-item", async (req, res) => {
   }
 });
 
+// Delete Single Cart Item
+router.delete("/delete-item/:id", async (req, res) => {
+  console.log(req.params.id);
+  const removeProduct = await Cart.findByIdAndDelete(req.params.id);
+  console.log("cart item deleted successfully");
+  res.status(200).send(removeProduct);
+});
 module.exports = router;
