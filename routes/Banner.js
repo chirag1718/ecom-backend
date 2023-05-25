@@ -58,6 +58,8 @@ router.post("/add-banner", multerUpload.single("file"), async (req, res) => {
       },
       source: req.body.source,
       isHero: req.body.isHero,
+      isMid: req.body.isMid,
+      isBottom: req.body.isBottom,
     });
 
     //Save new Banner 🍫
