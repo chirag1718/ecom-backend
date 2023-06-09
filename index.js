@@ -43,7 +43,13 @@ mongoose
     }
     // () => console.log("Connected to DB")
   )
-  .then(() => console.log("Connected to DB"))
+  .then(() => {
+    // Server Connection
+    const port = process.env.PORT || 3006;
+    app.listen(port, console.log("Server is up and Running!"));
+    console.log("Connected to DB");
+  })
+
   .catch((e) => console.log(e));
 
 // Middleware
@@ -66,6 +72,5 @@ app.use("/api/v1/banner", bannerRoute);
 
 // Cart Route
 app.use("/api/v1/cart", cartRoute);
-// Server Connection
-const port = process.env.PORT || 3006;
-app.listen(port, console.log("Server is up and Running!"));
+
+app.use("/health", "server is healthy");
