@@ -73,6 +73,6 @@ app.use("/api/v1/banner", bannerRoute);
 // Cart Route
 app.use("/api/v1/cart", cartRoute);
 
-app.use("/health", (req, res) => {
+app.get("/health", (req, res) => {
   res.send("server is healthy");
 });
